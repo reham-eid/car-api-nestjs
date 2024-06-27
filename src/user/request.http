@@ -1,0 +1,41 @@
+#################SignUp######################
+POST  http://localhost:3000/auth/sign-up
+Content-Type: application/json
+
+{
+  "email":"2rehamoo1000@gmail.com",
+  "password":"P2assword#123"
+}
+
+#################SignIn######################
+POST  http://localhost:3000/auth/sign-in
+Content-Type: application/json
+
+{
+  "email":"2rehamoo1000@gmail.com",
+  "password":"P2assword#123"
+}
+
+#################UserSignedIn######################
+GET  http://localhost:3000/auth/protected
+
+#################SignOut######################
+POST  http://localhost:3000/auth/sign-out
+
+################AllUsers######################
+GET http://localhost:3000/auth?email=hey@rr.com
+
+################OneUser######################
+GET http://localhost:3000/auth/17
+
+################RemoveUser######################
+DELETE http://localhost:3000/auth/15
+
+################UpdateUser######################
+PUT http://localhost:3000/auth/1
+Content-Type: application/json
+
+{
+  "email":"reham1900@gmail.com"
+}
+
