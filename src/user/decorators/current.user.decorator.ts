@@ -7,6 +7,8 @@ export const CurrentUser = createParamDecorator(
   // 1-Any data passed to the decorator argument when it is used.
   // 2-provides access to the details of the incoming request.
   const req = context.switchToHttp().getRequest()
+  
   return req.currentUser
 }
 )
+

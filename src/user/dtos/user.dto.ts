@@ -1,4 +1,4 @@
-import { Expose } from 'class-transformer'
+import { Exclude, Expose } from 'class-transformer'
 
 
 export class UserDto{ 
@@ -9,9 +9,9 @@ export class UserDto{
   @Expose()
   email:string
 
-  // @Exclude()
+  @Exclude()
   // @IsStrongPassword()
-  @Expose()
+  // @Expose()
   password:string
 
 }

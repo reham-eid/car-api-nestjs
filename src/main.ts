@@ -1,17 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
-import cookieSession from 'cookie-session';
+import { ConfigService } from '@nestjs/config';
+// import { startUp } from './startup-app';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.use(cookieSession({
-    keys: ['reham']
-  }))
-  app.useGlobalPipes(new ValidationPipe({
-    whitelist:true ,
-    forbidNonWhitelisted : true
-  })) 
-  await app.listen(3000);
+  // startUp(app)
+  const configService = app.get(ConfigService)
+  const port = configService.get<number>('PORT')
+  await app.listen(port);
 }
 bootstrap();

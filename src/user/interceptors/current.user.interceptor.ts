@@ -13,7 +13,7 @@ export class currentUserInterseptor implements NestInterceptor{
     if(userId){
       const user = this.userService.findOne(userId)
       req.currentUser = user // connect Interseptor with decorator
-      
+      console.log('Current User:', user); 
     }
 
     return next.handle()
