@@ -8,8 +8,9 @@ export class CookieSessionMiddleware implements NestMiddleware {
   use(req: any, res: any, next: () => void) {
     cookieSession({
       name: 'session',
-      keys: [this.configService.get<string>('KEYS')], 
+      keys: [this.configService.get<string>('COOKIE_KEY')], 
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
     })(req, res, next);
   }
 }
+// $📋

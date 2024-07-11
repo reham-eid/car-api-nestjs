@@ -1,0 +1,25 @@
+#################Create Report######################
+POST  http://localhost:3000/report
+Content-Type: application/json
+
+{
+  "price":85000,
+  "company":"Ford",
+  "model":"mustang",
+  "year":1981,
+  "lng":45, 
+  "lat":45, 
+  "mileage":1000000
+}
+
+################ApprovedReports######################
+PATCH http://localhost:3000/report/1
+Content-Type: application/json
+
+{
+  "approved":true
+}
+
+################Get An Estimate For An Existing Vehical######################
+GET http://localhost:3000/report?mileage=1000000&lat=45&lng=45&year=1981&model=mustang&company=Ford
+

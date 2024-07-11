@@ -1,6 +1,5 @@
 import {
   Body,
-  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -12,33 +11,46 @@ import {
   Put,
   Query,
   Session,
-  // UseGuards,
-  UseInterceptors,
+  UseGuards,
+  // UseInterceptors,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { createUserDto } from './dtos/user.create.dto';
 import { UserDto } from './dtos/user.dto';
 import { AuthService } from './auth.service';
-// import { User } from './user.entity';
-// import { CurrentUser } from './decorators/current.user.decorator';
-// import { AuthGuard } from './guards/auth.guard';
-import {
-  Serialize,
-  SerializeInterceptor,
-} from 'src/interceptors/serialize.interceptor';
-// import { currentUserInterseptor } from './interceptors/current.user.interceptor';
+import { User } from './user.entity';
+import { CurrentUser } from './decorators/current.user.decorator';
+import { AuthGuard } from '../guards/auth.guard';
+import { Serialize } from 'src/interceptors/serialize.interceptor';
+// import { currentUserInterseptor } from './interceptors/current.user.interceptor'; // in user.module
 
-@UseInterceptors(ClassSerializerInterceptor)
-@UseInterceptors(new SerializeInterceptor(UserDto))
+// @UseInterceptors(ClassSerializerInterceptor)
+// @UseInterceptors(new SerializeInterceptor(UserDto))
+// @UseInterceptors(currentUserInterseptor) // to make use @CurrentUser()
 @Controller('auth')
 @Serialize(UserDto)
-// @UseInterceptors(currentUserInterseptor) // to make use @CurrentUser()
 export class UserController {
   constructor(
     private userService: UserService,
     private authService: AuthService,
   ) {}
 
+  // @Get('/protected')
+  // siginedInUser(@Session() session: any) {
+  //   console.log('Session in protected:', session);
+  //   return this.userService.findOne(session.userId);
+  // }
+  @Get('/protected')
+  @UseGuards(AuthGuard)
+  siginedInUser(@CurrentUser() user: User) {
+    return user;
+  }
+
+  @Post('/sign-out')
+  sginOut(@Session() session: any) {
+    session.userId = null;
+    console.log('Session after sign-out:', session);
+  }
   @Post('/sign-up')
   async signUp(@Body() body: createUserDto, @Session() session: any) {
     const user = await this.authService.signUp(body.email, body.password);
@@ -47,29 +59,12 @@ export class UserController {
     return user;
   }
 
-@Post('/sign-in')
-// @Serialize(UserDto)
+  @Post('/sign-in')
   async signIn(@Body() body: createUserDto, @Session() session: any) {
     const user = await this.authService.signIn(body.email, body.password);
     session.userId = user.id;
     console.log('Session after sign-in:', session);
     return user;
-  }
-  @Get('/protected')
-  siginedInUser(@Session() session:any){
-    console.log('Session in protected:', session);
-    return this.userService.findOne(session.userId)
-  }
-  // @Get('/protected')
-  // @UseGuards(AuthGuard)
-  // siginedInUser(@CurrentUser() user: User) {
-  //   return user;
-  // }
-  @Post('/sign-out')
-  sginOut(@Session() session: any) {
-    session.userId = null;
-    console.log('Session after sign-out:', session);
-    // return (session.userId = null);
   }
   @Get()
   async AllUsers(@Query('email') email: string) {

@@ -1,9 +1,11 @@
+import { Report } from '../report/report.entity';
 import {
   AfterInsert,
   AfterRemove,
   AfterUpdate,
   Column,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -11,6 +13,13 @@ import {
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @OneToMany(() => Report, (report) => report.user)
+  // report.user cause we are in user-entity which defined
+  reports: Report[];
+
+  @Column({ default: true })
+  admin: boolean;
 
   @Column()
   email: string;

@@ -1,4 +1,4 @@
-import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 
 // export class AuthGuard implements CanActivate{
 //   canActivate(context : ExecutionContext){
@@ -8,11 +8,14 @@ import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
 //   }
 // }
 
+// usefull of gaurds to forbid access to certian routes
 @Injectable()
 export class AuthGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
-    const request = context.switchToHttp().getRequest();
-    console.log('AuthGuard Session:', request.session);
-    return request.session && request.session.userId;
+    // context >> incoming req
+    const req = context.switchToHttp().getRequest();
+    console.log('AuthGuard Session:', req.session);
+
+    return req.session && req.session.userId;
   }
 }

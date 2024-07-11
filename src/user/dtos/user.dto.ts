@@ -10,8 +10,6 @@ export class UserDto{
   email:string
 
   @Exclude()
-  // @IsStrongPassword()
-  // @Expose()
   password:string
 
 }
